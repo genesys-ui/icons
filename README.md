@@ -1,9 +1,8 @@
-# genesys-icons
+# Genesys UI Icons
 
-Genesys Icons is an icon library used by Devo products; developed and maintained by
-the QuVis team.
+Genesys UI Icons is an icon library.
 
-You could use this package for components or for icon font.
+You could use this package as components or as icon font.
 
 ## Documentation
 
@@ -16,7 +15,3 @@ The change log for releases is available [here](CHANGELOG.md).
 ## Contributing
 
 The contributions to this library are detailed [here](CONTRIBUTING.md).
-
-## Team
-
-https://github.com/orgs/DevoInc/teams/quvis
