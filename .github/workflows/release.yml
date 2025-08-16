@@ -29,8 +29,10 @@ jobs:
     uses: genesys-ui/gh-workflows/.github/workflows/build.yml@main
   test:
     uses: genesys-ui/gh-workflows/.github/workflows/test.yml@main
+    needs: [build]
   release:
     uses: genesys-ui/gh-workflows/.github/workflows/release.yml@main
+    needs: [test]
     with:
       version: github.event.inputs.version
       dry: github.event.inputs.dry

@@ -20,7 +20,10 @@ jobs:
     uses: genesys-ui/gh-workflows/.github/workflows/build.yml@main
   test:
     uses: genesys-ui/gh-workflows/.github/workflows/test.yml@main
+    needs: [build]
   mutation-testing:
     uses: genesys-ui/gh-workflows/.github/workflows/mutation-testing.yml@main
+    needs: [test]
   deploy:
     uses: genesys-ui/gh-workflows/.github/workflows/deploy.yml@main
+    needs: [test]
