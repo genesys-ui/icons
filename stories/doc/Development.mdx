@@ -1,29 +1,22 @@
-import { Meta } from '@storybook/blocks';
+import { Meta } from '@storybook/addon-docs/blocks';
 
 <Meta title="Doc/Development" />
 
 # Development
 
-Clone the repository from [Github Genesys Icons](https://github.com/DevoInc/genesys-icons).
+Clone the repository from [Github](https://github.com/genesys-ui/icons).
 
 ```js
-git clone git@github.com:DevoInc/genesys-icons.git
+git clone git@github.com:genesys-ui/icons.git
 ```
-
-## Requirements
-
-You will need to have installed:
-
-- node >= 14
-- npm >= 7
 
 ## Installation
 
-First install the depencies
+First install the dependencies
 
 ```js
-cd /path/to/genesys-icons
-npm ci
+cd /path/to/icons
+pnpm install
 ```
 
 ## Generate the icons
@@ -32,7 +25,7 @@ Once installed the library, you will need to generate the icons.
 Run the follo command to generate icons for react and icons as a font.
 
 ```js
-npm run generate
+pnpm run generate
 ```
 
 Or if you only want to generate icons for a particular case, run one of the
@@ -40,24 +33,24 @@ following commands:
 
 ```js
 // for react
-npm run generate:react
+pnpm run generate:react
 // for font
-npm run generate:font
+pnpm run generate:font
 ```
 
 Sometimes you will need to removed these files to work with a clean directory.
 
 ```js
 // for react
-npm run clean:react
+pnpm run clean:react
 // for font
-npm run clean:font
+pnpm run clean:font
 ```
 
 Or if you need to remove all directories generated for development run:
 
 ```js
-npm run clean
+pnpm run clean
 ```
 
 > _Note_: After run this command you will need to install the package.
@@ -67,7 +60,7 @@ npm run clean
 Once you have installed and generated the icons, you can run a storybook to preview the output.
 
 ```js
-npm run start
+pnpm run start
 ```
 
 ## Tests
@@ -75,11 +68,11 @@ npm run start
 To check any change ensure to run the tests.
 
 ```js
-npm run test
+pnpm run test
 ```
 
 Optionally, you can run stryker to ensure the coverage of the tests.
 
 ```js
-npm run stryker
+pnpm run stryker
 ```

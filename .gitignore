@@ -2,7 +2,6 @@ node_modules
 coverage
 reports
 storybook-static
-.eslintcache
 .stryker-tmp
 stryker.log
 dist
