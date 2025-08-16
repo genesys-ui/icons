@@ -1,185 +1,26 @@
 name: ci
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
 
 permissions:
   contents: read
   id-token: write
   pages: write
 
-on:
-  push:
-    branches: ['master']
-  pull_request:
-    branches: ['master']
-
-  # Allows to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-env:
-  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-# Allow one concurrent deployment
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: |
-            **/node_modules
-            ~/.npm
-            dist
-          key: ${{ runner.os }}-prepare-${{ env.cache-name }}-${{ github.sha }}
-
-      - name: Set Node v22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          registry-url: https://registry.npmjs.org/
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Generate dist
-        run: npm run dist
-
-  lint:
-    needs: [build]
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Use node modules cache
-        id: cache-npm
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: |
-            **/node_modules
-            ~/.npm
-            dist
-          key: ${{ runner.os }}-prepare-${{ env.cache-name }}-${{ github.sha }}
-
-      - name: Run validations
-        run: npm run validations
-
-      - name: Run Eslint
-        run: npm run lint
-
-  unit-test:
-    needs: [build]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Use node modules cache
-        id: cache-npm
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: |
-            **/node_modules
-            ~/.npm
-            dist
-          key: ${{ runner.os }}-prepare-${{ env.cache-name }}-${{ github.sha }}
-
-      - name: Run Jest
-        run: npm run test
-
-  mutation-test:
-    needs: [unit-test]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Use node modules cache
-        id: cache-npm
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: |
-            **/node_modules
-            ~/.npm
-            dist
-          key: ${{ runner.os }}-prepare-${{ env.cache-name }}-${{ github.sha }}
-
-      - name: Setup results folder
-        run: mkdir mutation-test-results
-
-      - name: Execute Stryker
-        run: npm run stryker
-
-      - name: Post Stryker
-        run: |
-          cd mutation-test-results
-          cp /home/runner/work/genesys-icons/genesys-icons/reports/mutation/mutation.html stryker-report.html
-          cd ..
-
-      - name: Upload artifact with results
-        uses: actions/upload-artifact@v4
-        with:
-          name: mutation-test-results
-          path: mutation-test-results
-
+    uses: genesys-ui/gh-workflows/.github/workflows/build.yml@main
+  test:
+    uses: genesys-ui/gh-workflows/.github/workflows/test.yml@main
+  mutation-testing:
+    uses: genesys-ui/gh-workflows/.github/workflows/mutation-testing.yml@main
   deploy:
-    needs: [lint, unit-test]
-    if: github.ref == 'refs/heads/master'
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Use node modules cache
-        id: cache-npm
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: |
-            **/node_modules
-            ~/.npm
-            dist
-          key: ${{ runner.os }}-prepare-${{ env.cache-name }}-${{ github.sha }}
-
-      - name: Build Storybook
-        run: npm run build-storybook
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './storybook-static'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    uses: genesys-ui/gh-workflows/.github/workflows/deploy.yml@main
