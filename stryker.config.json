@@ -1,0 +1,22 @@
+{
+  "packageManager": "pnpm",
+  "plugins": [
+    "@stryker-mutator/vitest-runner",
+    "@stryker-mutator/typescript-checker"
+  ],
+  "testRunner": "vitest",
+  "vitest": {
+    "configFile": "./vitest.config.ts"
+  },
+  "_comment": {
+    "checkers": ["typescript"],
+    "tsconfigFile": "tsconfig.json",
+    "typescriptChecker": {
+      "prioritizePerformanceOverAccuracy": true
+    }
+  },
+  "reporters": ["html", "clear-text", "progress"],
+  "mutate": ["{scripts,src}/**/!(*.+(t|T)est).+(ts|tsx)"],
+  "ignorePatterns": ["src/icons/*"],
+  "ignoreStatic": true
+}
