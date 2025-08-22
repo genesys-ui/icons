@@ -70,6 +70,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/genesys-ui/icons.git"
+  },
   "optionalDependencies": {
     "react": "19.x"
   }
