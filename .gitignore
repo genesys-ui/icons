@@ -2,6 +2,7 @@ node_modules
 coverage
 reports
 storybook-static
+public
 .stryker-tmp
 stryker.log
 dist
